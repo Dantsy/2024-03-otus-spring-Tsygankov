@@ -28,13 +28,9 @@ public class StreamsIOServiceTest {
     @Test
     @DisplayName("Question output testing")
     void shouldReturnStringWithQuestion() {
-        Question testQuestion = new Question("Test question?", List.of(
-                new Answer("Answer1", true), new Answer("Answer2", false)));
+        Question testQuestion = new Question("Test question?", List.of(new Answer("Answer1", true), new Answer("Answer2", false)));
         streamsIOService.printQuestion(testQuestion);
-        verify(mockPrintStream).printf(
-                "Test question? (%s): %n",
-                "1.Answer1,2.Answer2"
-        );
+        verify(mockPrintStream).printf("Test question? (%s): %n", "1.Answer1,2.Answer2");
         verifyNoMoreInteractions(mockPrintStream);
     }
 }
