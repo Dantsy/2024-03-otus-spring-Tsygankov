@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,15 +19,14 @@ public class CsvQuestionDao implements QuestionDao {
 
     @Override
     public List<Question> findAll() throws QuestionReadException {
-        List<QuestionDto> quest = getQuestionsFromCsv(fileNameProvider.getTestFileName());
-        List<Question> allQuestList = new ArrayList<>();
-        for (QuestionDto qst : quest) {
-            if (!checkCorrectLine(qst)) {
-                throw new QuestionReadException("Not correct question or too little answers");
-            }
-            allQuestList.add(qst.toDomainObject());
-        }
-        return allQuestList;
+        return getQuestionsFromCsv(fileNameProvider.getTestFileName())
+                .stream()
+                .map(qst -> {
+                    if (!checkCorrectQuestion(qst)) {
+                        throw new QuestionReadException("Not correct question or too little answers");
+                    }
+                    return qst.toDomainObject();
+                }).toList();
     }
 
     private List<QuestionDto> getQuestionsFromCsv(String filename) throws QuestionReadException {
@@ -41,12 +39,12 @@ public class CsvQuestionDao implements QuestionDao {
                     .build()
                     .parse();
         } catch (IOException e) {
-            throw new QuestionReadException(String.format("Problem read file question or File %s not found",
+            throw new QuestionReadException(String.format("Problem reading file or file %s not found",
                     fileNameProvider.getTestFileName()), e);
         }
     }
 
-    private boolean checkCorrectLine(QuestionDto qDto) {
+    private boolean checkCorrectQuestion(QuestionDto qDto) {
         return ((qDto.getText().length() > 3) && (qDto.getAnswers().size() > 2));
     }
 
@@ -54,7 +52,7 @@ public class CsvQuestionDao implements QuestionDao {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(filename);
         if (inputStream == null) {
-            throw new QuestionReadException(String.format("File %s not found", filename), new RuntimeException());
+            throw new QuestionReadException(String.format("File %s not found", filename));
         } else {
             return inputStream;
         }
