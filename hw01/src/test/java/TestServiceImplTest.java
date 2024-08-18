@@ -12,7 +12,7 @@ import ru.otus.spring.hw.service.TestServiceImpl;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestOfTestServiceImpl {
+public class TestServiceImplTest {
     private static final String Quest_Text = "test1";
     private static final List<Answer> Answer_List =
             Arrays.asList(new Answer("answer1", true), new Answer("answer2", false));
