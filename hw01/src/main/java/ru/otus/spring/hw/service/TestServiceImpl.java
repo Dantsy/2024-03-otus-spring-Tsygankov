@@ -16,21 +16,21 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void executeTest() {
-        List<Question> questionList = questionDao.findAll();
+        List<Question> questionsList = questionDao.findAll();
         ioService.printFormattedLine("Please answer the questions below%n");
-        ioService.printFormattedLine(createQuestionString(questionList).toString());
+        ioService.printFormattedLine(createQuestionString(questionsList));
         ioService.printLine("");
     }
 
-    private StringBuilder createQuestionString(List<Question> qstList) {
+    private String createQuestionString(List<Question> questionsList) {
         StringBuilder questionSb = new StringBuilder();
-        for (Question qst : qstList) {
+        for (Question qst : questionsList) {
             questionSb.append("Question: ").append(qst.text()).append(" %n");
             for (Answer answ : qst.answers()) {
                 questionSb.append(qst.answers().indexOf(answ)).append(". ").append(answ.text()).append(" %n");
             }
             questionSb.append(" %n");
         }
-        return questionSb;
+        return questionSb.toString();
     }
 }
