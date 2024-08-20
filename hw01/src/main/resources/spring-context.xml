@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <bean id="ioService" class="ru.otus.spring.hw.service.StreamsIOService">
+        <constructor-arg name="printStream" type="java.io.PrintStream" value="#{T(System).out}"/>
+    </bean>
+
+    <bean id="appConfig" class="ru.otus.spring.hw.config.AppConfig">
+        <constructor-arg name="testFileName" value="${questions.csv}"/>
+    </bean>
+
+    <bean id="csvQuestDao" class="ru.otus.spring.hw.dao.CsvQuestionDao">
+        <constructor-arg name="fileNameProvider" ref="appConfig"/>
+    </bean>
+
+    <bean id="testService" class="ru.otus.spring.hw.service.TestServiceImpl">
+        <constructor-arg name="ioService" ref="ioService"/>
+        <constructor-arg name="questionDao" ref="csvQuestDao"/>
+    </bean>
+
+    <bean id="testRunnerService" class="ru.otus.spring.hw.service.TestRunnerServiceImpl">
+        <constructor-arg name="testService" ref="testService"/>
+    </bean>
+
+</beans>
