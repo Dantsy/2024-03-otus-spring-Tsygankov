@@ -24,10 +24,10 @@ public class TestServiceImpl implements TestService {
 
     private String createQuestionString(List<Question> questionsList) {
         StringBuilder questionSb = new StringBuilder();
-        for (Question qst : questionsList) {
-            questionSb.append("Question: ").append(qst.text()).append(" %n");
-            for (Answer answ : qst.answers()) {
-                questionSb.append(qst.answers().indexOf(answ)).append(". ").append(answ.text()).append(" %n");
+        for (Question question : questionsList) {
+            questionSb.append("Question: ").append(question.text()).append(" %n");
+            for (Answer answer : question.answers()) {
+                questionSb.append(question.answers().indexOf(answer)).append(". ").append(answer.text()).append(" %n");
             }
             questionSb.append(" %n");
         }
