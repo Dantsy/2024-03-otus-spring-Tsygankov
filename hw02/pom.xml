@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.otus.spring.hw</groupId>
-    <artifactId>hw01</artifactId>
+    <artifactId>hw02</artifactId>
     <version>1.0.0</version>
 
     <properties>
@@ -44,6 +44,7 @@
             </exclusions>
         </dependency>
 
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -71,6 +72,7 @@
             <optional>true</optional>
             <version>${lombok.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -114,7 +116,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.spring.hw01.Application</mainClass>
+                            <mainClass>ru.otus.spring.hw02.Application</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                     </archive>
