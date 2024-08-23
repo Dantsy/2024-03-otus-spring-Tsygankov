@@ -24,24 +24,24 @@ public class TestServiceImpl implements TestService {
         TestResult testResult = new TestResult(student);
         ioService.printFormattedLine("Please answer the questions below%n");
         for (Question question : questionList) {
-            ioService.printFormattedLine(createQuestionStringBuilder(question));
-            testResult.applyAnswer(question, getRightOrNotAnswer(question));
+            ioService.printFormattedLine(createQuestionString(question));
+            testResult.applyAnswer(question, getAnswerIsCorrect(question));
         }
         return testResult;
     }
 
-    private String createQuestionStringBuilder(Question question) {
-        StringBuilder questionSb = new StringBuilder();
-        questionSb.append("Question: " + question.text() + " %n");
-        for (Answer answer : question.answers()) {
-            questionSb.append(question.answers().indexOf(answer) + ". " + answer.text() + " %n");
+    private String createQuestionString(Question question) {
+        StringBuilder questionStringBuilder = new StringBuilder();
+        questionStringBuilder.append("Question: " + question.text() + " %n");
+        for (int i = 0; i < question.answers().size(); i++) {
+            questionStringBuilder.append((i + 1) + ". " + question.answers().get(i).text() + " %n");
         }
-        return questionSb.toString();
+        return questionStringBuilder.toString();
     }
 
-    private boolean getRightOrNotAnswer(Question question) {
-        int max = question.answers().size() - 1;
-        int countAnsw = ioService.readIntForRange(0, max, "Enter int value between 0 - " + max);
-        return question.answers().get(countAnsw).isCorrect();
+    private boolean getAnswerIsCorrect(Question question) {
+        int max = question.answers().size();
+        int answerIndex = ioService.readIntForRange(1, max, "Enter int value between 1 - " + max) - 1;
+        return question.answers().get(answerIndex).isCorrect();
     }
 }

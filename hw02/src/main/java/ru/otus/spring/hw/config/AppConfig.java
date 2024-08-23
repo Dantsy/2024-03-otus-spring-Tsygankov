@@ -11,6 +11,6 @@ public class AppConfig implements TestFileNameProvider,TestConfig {
     @Value("${test.filename}")
     private String testFileName;
 
-    @Value("${test.right.answers}")
+    @Value("${test.right.answers.count}")
     private int rightAnswersCountToPass;
 }

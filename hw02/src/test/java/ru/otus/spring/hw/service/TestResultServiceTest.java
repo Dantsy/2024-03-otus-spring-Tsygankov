@@ -1,37 +1,34 @@
 package ru.otus.spring.hw.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.spring.hw.config.AppConfig;
-import ru.otus.spring.hw.config.TestConfig;
-import ru.otus.spring.hw.domain.Answer;
-import ru.otus.spring.hw.domain.Question;
 import ru.otus.spring.hw.domain.Student;
 import ru.otus.spring.hw.domain.TestResult;
 
-import java.util.List;
-
 import static org.mockito.Mockito.times;
 
+@ExtendWith(MockitoExtension.class)
 public class TestResultServiceTest {
+    @Mock
     private IOService ioService;
-    private TestConfig testConfig;
-    private final Student student = new Student("TestFirstName", "TestLastName");
+    @Mock
+    private AppConfig testConfig;
 
-    @BeforeEach
-    public void init() {
-        ioService = Mockito.mock(StreamsIOService.class);
-        testConfig = Mockito.mock(AppConfig.class);
-        Question question = new Question("test1", List.of(new Answer("answer1", true),
-                new Answer("answer2", false)));
-        Mockito.when(testConfig.getRightAnswersCountToPass()).thenReturn(1);
-    }
+    @InjectMocks
+    private ResultServiceImpl resultService;
+
+    private final Student student = new Student("TestFirstName", "TestLastName");
 
     @Test
     public void shouldShowStudentResult() {
-        ResultService resultService = new ResultServiceImpl(testConfig, ioService);
+        Mockito.when(testConfig.getRightAnswersCountToPass()).thenReturn(1);
         TestResult testResult = new TestResult(student);
+
         resultService.showResult(testResult);
 
         Mockito.verify(ioService, times(1))
