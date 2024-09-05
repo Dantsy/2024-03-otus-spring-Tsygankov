@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.spring.hw.models.Author;
 import ru.otus.spring.hw.models.Book;
@@ -103,6 +104,35 @@ class BookRepositoryJdbcTest {
         Assertions.assertThat(repositoryJdbc.findById(1L)).isPresent();
         repositoryJdbc.deleteById(1L);
         Assertions.assertThat(repositoryJdbc.findById(1L)).isEmpty();
+    }
+
+    @DisplayName("Should handle update of non-existing book")
+    @Test
+    void shouldHandleUpdateOfNonExistingBook() {
+        long nonExistingBookId = 9999L;
+        var nonExistingBook = new Book(nonExistingBookId, "NonExistingBookTitle", dbAuthors.get(0), List.of(dbGenres.get(0)));
+
+        Assertions.assertThatThrownBy(() -> repositoryJdbc.save(nonExistingBook))
+                .isInstanceOf(DataIntegrityViolationException.class);
+    }
+
+    @DisplayName("Should return empty Optional for non-existing book")
+    @Test
+    void shouldReturnEmptyOptionalForNonExistingBook() {
+        long nonExistingBookId = 9999L;
+        var actualBook = repositoryJdbc.findById(nonExistingBookId);
+        Assertions.assertThat(actualBook).isEmpty();
+    }
+
+    @DisplayName("Should handle delete of non-existing book")
+    @Test
+    void shouldHandleDeleteOfNonExistingBook() {
+        long nonExistingBookId = 9999L;
+
+        repositoryJdbc.deleteById(nonExistingBookId);
+
+        var allBooksAfterDelete = repositoryJdbc.findAll();
+        Assertions.assertThat(allBooksAfterDelete).containsExactlyElementsOf(dbBooks);
     }
 
     private static List<Author> getDbAuthors() {
