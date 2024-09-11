@@ -12,7 +12,9 @@
         <module>hw01</module>
         <module>hw02</module>
         <module>hw03</module>
-    </modules>
+        <module>hw04</module>
+        <module>hw05</module>
+
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
