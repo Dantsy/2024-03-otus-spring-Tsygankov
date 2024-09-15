@@ -1,7 +1,6 @@
 package ru.otus.spring.hw.repositories;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,9 +25,9 @@ import java.util.Objects;
 @ActiveProfiles("test")
 class CommentRepositoryJpaTest {
 
-    private static final int First_comment_index = 0;
-    private static final int First_book_index = 0;
-    private static final long First_comment_id = 1L;
+    private static final int FIRST_COMMENT_INDEX = 0;
+    private static final int FIRST_BOOK_INDEX = 0;
+    private static final long FIRST_COMMENT_ID = 1L;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -39,11 +38,6 @@ class CommentRepositoryJpaTest {
     @Autowired
     private DtoMapper mapper;
 
-    @BeforeAll
-    static void initialization() {
-        TestDataHolder.prepareTestData();
-    }
-
     @BeforeEach
     void setUp() {
         TestDataHolder.prepareTestData();
@@ -53,7 +47,7 @@ class CommentRepositoryJpaTest {
     @Test
     void shouldReturnCorrectCommentById() {
         var expectedCommentDto = mapper.commentToCommentDto(
-                TestDataHolder.getBooks().get(First_book_index).getComments().get(First_comment_index));
+                TestDataHolder.getBooks().get(FIRST_BOOK_INDEX).getComments().get(FIRST_COMMENT_INDEX));
         var actualCommentDto = commentRepository.findById(expectedCommentDto.getId()).map(mapper::commentToCommentDto);
         Assertions.assertThat(actualCommentDto).isPresent()
                 .get().isEqualTo(expectedCommentDto);
@@ -62,7 +56,7 @@ class CommentRepositoryJpaTest {
     @DisplayName("must save a new comment for the book")
     @Test
     void shouldSaveNewComment() {
-        var book = TestDataHolder.getBooks().get(First_book_index);
+        var book = TestDataHolder.getBooks().get(FIRST_BOOK_INDEX);
         var expectedComment = new Comment(0, "Comment_%d_for_book_%d".formatted(1, book.getId()), book);
         var expectedCommentDto = mapper.commentToCommentDto(expectedComment);
         var returnedCommentDto = mapper.commentToCommentDto(commentRepository.save(expectedComment));
@@ -80,7 +74,7 @@ class CommentRepositoryJpaTest {
     @DisplayName("must save the modified comment")
     @Test
     void shouldSaveUpdatedComment() {
-        var book = TestDataHolder.getBooks().get(First_book_index);
+        var book = TestDataHolder.getBooks().get(FIRST_BOOK_INDEX);
         var expectedComment = new Comment(1L, "Content of comment that not expected", book);
         var expectedCommentDto = mapper.commentToCommentDto(expectedComment);
 
@@ -102,9 +96,9 @@ class CommentRepositoryJpaTest {
     @DisplayName("should delete a comment by id")
     @Test
     void shouldDeleteComment() {
-        Assertions.assertThat(entityManager.find(Comment.class, First_comment_id)).isNotNull();
-        commentRepository.deleteById(First_comment_id);
-        Assertions.assertThat(entityManager.find(Comment.class, First_comment_id)).isNull();
+        Assertions.assertThat(entityManager.find(Comment.class, FIRST_COMMENT_ID)).isNotNull();
+        commentRepository.deleteById(FIRST_COMMENT_ID);
+        Assertions.assertThat(entityManager.find(Comment.class, FIRST_COMMENT_ID)).isNull();
     }
 
     @DisplayName("should delete all comments after deleting a book")

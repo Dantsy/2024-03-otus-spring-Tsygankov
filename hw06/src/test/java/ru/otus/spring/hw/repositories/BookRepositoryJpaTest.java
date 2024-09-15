@@ -1,7 +1,6 @@
 package ru.otus.spring.hw.repositories;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ import java.util.List;
 @ActiveProfiles("test")
 class BookRepositoryJpaTest {
 
-    private static final long First_book_id = 1L;
+    private static final long FIRST_BOOK_ID = 1L;
 
     @Autowired
     private BookRepositoryJpa bookRepository;
@@ -36,11 +35,6 @@ class BookRepositoryJpaTest {
 
     @Autowired
     private DtoMapper mapper;
-
-    @BeforeAll
-    static void initialization() {
-        TestDataHolder.prepareTestData();
-    }
 
     @BeforeEach
     void setUp() {
@@ -113,9 +107,9 @@ class BookRepositoryJpaTest {
     @DisplayName("must delete a book by id")
     @Test
     void shouldDeleteBook() {
-        Assertions.assertThat(entityManager.find(Book.class, First_book_id)).isNotNull();
-        bookRepository.deleteById(First_book_id);
-        Assertions.assertThat(entityManager.find(Book.class, First_book_id)).isNull();
+        Assertions.assertThat(entityManager.find(Book.class, FIRST_BOOK_ID)).isNotNull();
+        bookRepository.deleteById(FIRST_BOOK_ID);
+        Assertions.assertThat(entityManager.find(Book.class, FIRST_BOOK_ID)).isNull();
     }
 
     @DisplayName("should handle update of non-existing book")

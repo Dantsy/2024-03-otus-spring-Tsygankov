@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @ActiveProfiles("test")
 class BookServiceTest {
 
-    private static final int First_book_index = 0;
+    private static final int FIRST_BOOK_INDEX = 0;
 
     @MockBean
     private BookRepository bookRepository;
@@ -42,9 +42,9 @@ class BookServiceTest {
     @Autowired
     private DtoMapper mapper;
 
-    @Autowired
     @InjectMocks
-    BookServiceImpl bookService;
+    @Autowired
+    private BookServiceImpl bookService;
 
     @BeforeEach
     void setUp() {
@@ -54,23 +54,23 @@ class BookServiceTest {
     @DisplayName("should return a completed book with the specified id")
     @Test
     void insert() {
-
-        var expectedBook = TestDataHolder.getBooks().get(First_book_index);
+        var expectedBook = TestDataHolder.getBooks().get(FIRST_BOOK_INDEX);
         Mockito.when(authorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(expectedBook.getAuthor()));
         Mockito.when(genreRepository.findAllByIds(Mockito.anyList())).thenReturn(expectedBook.getGenres());
         Mockito.when(bookRepository.save(Mockito.any(Book.class))).thenAnswer(invocation -> {
             Book sourceBook = invocation.getArgument(0);
             return new Book(1, sourceBook.getTitle(), sourceBook.getAuthor(), sourceBook.getGenres(), sourceBook.getComments());
         });
+
         var actualBookDto = bookService.insert(expectedBook.getTitle(),
                 expectedBook.getAuthor().getId(),
                 expectedBook.getGenres().stream().map(Genre::getId).collect(Collectors.toList()));
 
-        Assertions.assertThat(actualBookDto).isNotNull()
-                .matches(bookDto -> bookDto.getId() > 0)
-                .usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(mapper.bookToBookDTO(expectedBook));
-    }
+        var expectedBookDto = mapper.bookToBookDTO(expectedBook);
+        expectedBookDto.setId(1);
 
+        Assertions.assertThat(actualBookDto).isNotNull()
+                .usingRecursiveComparison()
+                .isEqualTo(expectedBookDto);
+    }
 }

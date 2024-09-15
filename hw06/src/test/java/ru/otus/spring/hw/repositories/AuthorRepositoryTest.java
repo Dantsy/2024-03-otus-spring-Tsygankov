@@ -17,7 +17,7 @@ import ru.otus.spring.hw.mappers.DtoMapperImpl;
 @ActiveProfiles("test")
 public class AuthorRepositoryTest {
 
-    private final static int First_author_index = 1;
+    private static final int FIRST_AUTHOR_INDEX = 1;
 
     @Autowired
     private AuthorRepository authorRepository;
@@ -33,7 +33,7 @@ public class AuthorRepositoryTest {
     @DisplayName("should get the author by id")
     @Test
     void shouldReturnCorrectAuthorById() {
-        var expectedAuthorDto = mapper.authorToAuthorDto(TestDataHolder.getAuthors().get(First_author_index));
+        var expectedAuthorDto = mapper.authorToAuthorDto(TestDataHolder.getAuthors().get(FIRST_AUTHOR_INDEX));
         var actualAuthorDto = authorRepository.findById(expectedAuthorDto.getId()).map(mapper::authorToAuthorDto);
         Assertions.assertThat(actualAuthorDto).isPresent()
                 .get().isEqualTo(expectedAuthorDto);
