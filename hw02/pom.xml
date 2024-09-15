@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.otus.spring.hw</groupId>
-    <artifactId>hw01</artifactId>
+    <artifactId>hw02</artifactId>
     <version>1.0.0</version>
 
     <properties>
@@ -58,6 +58,14 @@
             <version>${mockito.version}</version>
         </dependency>
 
+        <!-- Добавляем mockito-junit-jupiter -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+            <version>${mockito.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -71,6 +79,7 @@
             <optional>true</optional>
             <version>${lombok.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -114,7 +123,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.spring.hw01.Application</mainClass>
+                            <mainClass>ru.otus.spring.hw02.Application</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                     </archive>
