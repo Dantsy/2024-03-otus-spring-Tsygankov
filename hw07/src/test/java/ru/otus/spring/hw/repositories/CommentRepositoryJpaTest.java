@@ -127,6 +127,19 @@ class CommentRepositoryJpaTest {
         Assertions.assertThat(nonExistingComment).isNotPresent();
     }
 
+    @DisplayName("should find all comments by book id")
+    @Test
+    void shouldFindAllCommentsByBookId() {
+        long bookId = 1L;
+
+        List<Comment> foundComments = commentRepository.findAllByBookId(bookId);
+
+        Assertions.assertThat(foundComments).isNotEmpty();
+        Assertions.assertThat(foundComments).extracting(Comment::getBook)
+                .extracting(Book::getId)
+                .containsOnly(bookId);
+    }
+
     public static List<Book> getBooks() {
         return TestDataHolder.getBooks();
     }
