@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit Book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h3 {
+            background-image: url("../static/listmark.png");
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<form id="edit-form">
+    <h3>Book info:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" name="id" value=""/>
+    </div>
+
+    <div class="row">
+        <label for="book-title-input">Title:</label>
+        <input id="book-title-input" name="title" type="text" value=""/>
+        <div class="errors" id="title-error"></div>
+    </div>
+
+    <div class="row">
+        <label for="book-author-input">Author:</label>
+        <select id="book-author-input" name="authorId">
+            <!-- Options will be filled dynamically -->
+        </select>
+        <div class="errors" id="authorId-error"></div>
+    </div>
+
+    <div class="row">
+        <label for="book-genre-input">Genre:</label>
+        <select id="book-genre-input" name="genreIds" multiple>
+            <!-- Options will be filled dynamically -->
+        </select>
+        <div class="errors" id="genreIds-error"></div>
+    </div>
+
+    <div class="row">
+        <label for="book-comment-input">Comments:</label>
+        <select id="book-comment-input" name="commentIds" multiple>
+            <!-- Options will be filled dynamically -->
+        </select>
+
+        <div class="row">
+            <label for="book-new-comment-input">New Comment:</label>
+            <input id="book-new-comment-input" name="newCommentContent" type="text" />
+        </div>
+    </div>
+
+    <div class="row">
+        <button type="button" onclick="saveBook()">Save</button>
+        <a href="/books">
+            <button type="button">Cancel</button>
+        </a>
+    </div>
+</form>
+
+<script>
+    const bookId = window.location.pathname.split('/').pop();
+    fetch(`/api/books/${bookId}`)
+        .then(response => response.json())
+        .then(book => {
+            document.getElementById('id-input').value = book.id;
+            document.getElementById('book-title-input').value = book.title;
+            // Заполнение остальных полей
+        });
+
+    fetch('/api/authors')
+        .then(response => response.json())
+        .then(authors => {
+            const authorSelect = document.getElementById('book-author-input');
+            authors.forEach(author => {
+                const option = document.createElement('option');
+                option.value = author.id;
+                option.text = author.fullName;
+                authorSelect.appendChild(option);
+            });
+        });
+
+    fetch('/api/genres')
+        .then(response => response.json())
+        .then(genres => {
+            const genreSelect = document.getElementById('book-genre-input');
+            genres.forEach(genre => {
+                const option = document.createElement('option');
+                option.value = genre.id;
+                option.text = genre.name;
+                genreSelect.appendChild(option);
+            });
+        });
+
+    function saveBook() {
+        const form = document.getElementById('edit-form');
+        const formData = new FormData(form);
+
+        const params = new URLSearchParams();
+        const newCommentContent = formData.get('newCommentContent');
+        if (newCommentContent) {
+            params.append('newCommentContent', newCommentContent);
+        }
+
+        const queryString = params.toString();
+        const bookEditUrl = `/api/books/${bookId}` + (queryString ? '?' + queryString : '');
+
+        fetch(bookEditUrl, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: formData.get('id'),
+                title: formData.get('title'),
+                authorId: formData.get('authorId'),
+                genreIds: formData.getAll('genreIds'),
+                commentIds: formData.getAll('commentIds'),
+            })
+        }).then(response => {
+            if (!response.ok) {
+                return response.json().then(error => Promise.reject(error));
+            } else {
+                window.location.href = '/books';
+            }
+        }).catch(errors => {
+            displayErrors(errors);
+        });
+    }
+
+    function displayErrors(errors) {
+        clearErrors();
+        Object.entries(errors).forEach(([fieldName, errorMessage]) => {
+            const errorDiv = document.getElementById(`${fieldName}-error`);
+            if (errorDiv) {
+                errorDiv.innerText = errorMessage;
+            }
+        });
+    }
+
+    function clearErrors() {
+        const errorDivs = document.querySelectorAll('.errors');
+        errorDivs.forEach(errorDiv => errorDiv.innerText = '');
+    }
+</script>
+
+</body>
+</html>
