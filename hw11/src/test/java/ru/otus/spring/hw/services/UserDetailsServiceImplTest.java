@@ -3,10 +3,9 @@ package ru.otus.spring.hw.services;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ru.otus.spring.hw.models.User;
@@ -14,46 +13,118 @@ import ru.otus.spring.hw.repositories.UserRepository;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@DisplayName("Service for loading user details")
-@SpringBootTest(classes = {UserDetailsServiceImpl.class})
 class UserDetailsServiceImplTest {
 
-    @MockBean
+    @Mock
     private UserRepository userRepository;
 
-    @Autowired
+    @InjectMocks
     private UserDetailsServiceImpl userDetailsService;
-
-    private User testUser;
 
     @BeforeEach
     void setUp() {
-        testUser = new User(1L, "testUser", "password", "ROLE_USER");
+        MockitoAnnotations.openMocks(this);
     }
 
-    @DisplayName("should return UserDetails for an existing user")
     @Test
-    void loadUserByUsername_existingUser() {
-        Mockito.when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(testUser));
+    @DisplayName("Test loadUserByUsername with existing user")
+    void loadUserByUsername_UserExists_ReturnsUserDetails() {
+        String username = "testUser";
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword("password");
+        user.setRole("ROLE_USER");
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername("testUser");
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
-        assertThat(userDetails).isNotNull();
-        assertThat(userDetails.getUsername()).isEqualTo("testUser");
-        assertThat(userDetails.getPassword()).isEqualTo("password");
-        assertThat(userDetails.getAuthorities()).extracting("authority").containsExactly("ROLE_USER");
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        assertNotNull(userDetails);
+        assertEquals(username, userDetails.getUsername());
+        assertEquals(user.getPassword(), userDetails.getPassword());
+        assertTrue(userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_USER")));
     }
 
-    @DisplayName("should throw UsernameNotFoundException for non-existent user")
     @Test
-    void loadUserByUsername_nonExistingUser() {
-        Mockito.when(userRepository.findByUsername("nonExistingUser")).thenReturn(Optional.empty());
+    @DisplayName("Test loadUserByUsername with existing admin")
+    void loadUserByUsername_AdminExists_ReturnsUserDetails() {
+        String username = "adminUser";
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword("adminPassword");
+        user.setRole("ROLE_ADMIN");
 
-        assertThatThrownBy(() -> userDetailsService.loadUserByUsername("nonExistingUser"))
-                .isInstanceOf(UsernameNotFoundException.class)
-                .hasMessage("Could not find user with username = nonExistingUser");
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        assertNotNull(userDetails);
+        assertEquals(username, userDetails.getUsername());
+        assertEquals(user.getPassword(), userDetails.getPassword());
+        assertTrue(userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
+    }
+
+    @Test
+    @DisplayName("Test loadUserByUsername with non-existent user")
+    void loadUserByUsername_UserDoesNotExist_ThrowsUsernameNotFoundException() {
+        String username = "nonExistentUser";
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+
+        assertThrows(UsernameNotFoundException.class, () -> {
+            userDetailsService.loadUserByUsername(username);
+        });
+    }
+
+    @Test
+    @DisplayName("Test loadUserByUsername with user having no role")
+    void loadUserByUsername_UserHasNoRole_ThrowsIllegalArgumentException() {
+        String username = "userWithNoRole";
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword("password");
+        user.setRole(null); // No role set
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userDetailsService.loadUserByUsername(username);
+        });
+    }
+
+    @Test
+    @DisplayName("Test loadUserByUsername with user having no password")
+    void loadUserByUsername_UserHasNoPassword_ThrowsIllegalArgumentException() {
+        String username = "userWithNoPassword";
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(null); // No password set
+        user.setRole("ROLE_USER");
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userDetailsService.loadUserByUsername(username);
+        });
+    }
+
+    @Test
+    @DisplayName("Test loadUserByUsername with user having no username")
+    void loadUserByUsername_UserHasNoUsername_ThrowsIllegalArgumentException() {
+        String username = null;
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword("password");
+        user.setRole("ROLE_USER");
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            userDetailsService.loadUserByUsername(username);
+        });
     }
 }

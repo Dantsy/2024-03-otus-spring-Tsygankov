@@ -3,6 +3,8 @@ package ru.otus.spring.hw.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.h2.util.StringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,13 +60,13 @@ public class BookController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/books/edit")
-    public String saveBook(@Valid @ModelAttribute("book") BookDtoIds book,
-                           BindingResult bindingResult,
-                           @RequestParam("newCommentContent") String newCommentContent,
-                           Model model) {
+    public ResponseEntity<String> saveBook(@Valid @ModelAttribute("book") BookDtoIds book,
+                                           BindingResult bindingResult,
+                                           @RequestParam("newCommentContent") String newCommentContent,
+                                           Model model) {
         if (bindingResult.hasErrors()) {
             fillDataInModel(model, book.getId());
-            return "book-edit";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation errors");
         }
 
         var savedBookId = bookService.update(book.getId(), book.getTitle(), book.getAuthorId(),
@@ -74,14 +76,14 @@ public class BookController {
             commentService.insert(savedBookId, newCommentContent);
         }
 
-        return "redirect:/books";
+        return ResponseEntity.ok("Book saved successfully");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/books/delete")
-    public String deleteBook(@RequestParam("id") long id) {
+    public ResponseEntity<String> deleteBook(@RequestParam("id") long id) {
         bookService.deleteById(id);
-        return "redirect:/books";
+        return ResponseEntity.ok("Book deleted successfully");
     }
 
     private void fillDataInModel(Model model, long bookId) {

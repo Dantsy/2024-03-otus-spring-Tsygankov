@@ -19,9 +19,9 @@ CREATE TABLE books
 
 CREATE TABLE comments
 (
-    id         identity PRIMARY KEY,
-    book_id    BIGINT REFERENCES books (id) ON DELETE CASCADE,
-    content    VARCHAR(1024)
+    id      identity PRIMARY KEY,
+    book_id BIGINT REFERENCES books (id) ON DELETE CASCADE,
+    content VARCHAR(1024)
 );
 
 CREATE TABLE books_genres
@@ -33,8 +33,8 @@ CREATE TABLE books_genres
 
 CREATE TABLE users
 (
-    id         identity PRIMARY KEY,
-    username   VARCHAR(64),
-    password   VARCHAR(1024),
-    role       VARCHAR(255)
+    id       IDENTITY PRIMARY KEY,
+    username VARCHAR(64) NOT NULL,
+    password VARCHAR(1024) NOT NULL,
+    role     VARCHAR(255) NOT NULL
 );

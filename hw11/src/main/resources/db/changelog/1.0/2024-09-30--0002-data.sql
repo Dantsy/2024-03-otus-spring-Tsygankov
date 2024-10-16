@@ -24,5 +24,5 @@ VALUES (1, 1), (2, 2), (2, 3), (3, 3), (4, 4), (5, 5), (5, 3),
        (11, 6), (11, 3), (12, 3), (12, 6), (13, 4), (13, 7);
 
 INSERT INTO users(username, password, role)
-VALUES ('admin', '$2y$10$fsBa.mRJCU7YUC9msaasXOyHQlVIWj0F6i5W.yeUpc7OF..dDNLWe', 'admin'), -- pwd
-       ('user', '$2y$10$FD2GIs/aKP46U5aCD.jKyeJPbxanvN6Tk0NHO2jrBTsO/fvwMPQW.', 'user'); -- user
+values ('admin', '$2a$10$0YsoxeCg8oaKRsr2NKGcuujc1RmmcE7knPS2..cm5R1iMn.dAZ/lm', 'ADMIN'), -- admin
+       ('user', '$2a$10$H0NGfefRBmesmrljQpQIeOOCYw/lzawa0WZNdx3RK8ISyw33gxuAC', 'USER'); -- user

@@ -7,8 +7,8 @@ spring:
   sql:
     init:
       mode: always
-      data-locations: data.sql
-      schema-locations: schema.sql
+      data-locations: classpath:data.sql
+      schema-locations: classpath:schema.sql
   h2:
     console:
       enabled: true
@@ -16,11 +16,9 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-
     properties:
       hibernate:
         format_sql: true
     show-sql: true
-
   liquibase:
     enabled: false

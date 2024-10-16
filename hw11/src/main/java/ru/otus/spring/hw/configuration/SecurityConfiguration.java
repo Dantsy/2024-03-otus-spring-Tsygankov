@@ -25,16 +25,13 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/", "/authors", "/authors/list",
                                 "/books", "/books/list", "/genres", "/genres/list").authenticated()
-                        .requestMatchers("/authors/edit/**", "/authors/delete/**").hasAuthority("admin")
+                        .requestMatchers("/books/edit", "/books/delete").hasRole("ADMIN")
                         .anyRequest().denyAll()
                 )
                 .userDetailsService(userDetailsService)
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/")
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login?logout")

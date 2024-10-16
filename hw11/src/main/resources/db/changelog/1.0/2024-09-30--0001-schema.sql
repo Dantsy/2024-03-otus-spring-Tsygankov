@@ -36,8 +36,8 @@ CREATE TABLE books_genres
 
 CREATE TABLE users
 (
-    id         IDENTITY PRIMARY KEY,
-    username   VARCHAR(64),
-    password   VARCHAR(1024),
-    role       VARCHAR(255)
+    id       IDENTITY PRIMARY KEY,
+    username VARCHAR(64) NOT NULL,
+    password VARCHAR(1024) NOT NULL,
+    role     VARCHAR(255) NOT NULL
 );

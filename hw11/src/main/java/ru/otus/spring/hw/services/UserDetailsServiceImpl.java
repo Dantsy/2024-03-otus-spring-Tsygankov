@@ -6,9 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.hw.models.User;
 import ru.otus.spring.hw.repositories.UserRepository;
 
 import java.util.Collections;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +21,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        username,
-                        user.getPassword(),
-                        Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))))
-                .orElseThrow(() -> new UsernameNotFoundException("Could not find user with username = " + username));
+
+        Optional<User> foundedUser = userRepository.findByUsername(username);
+
+        if (foundedUser.isEmpty()) {
+            throw new UsernameNotFoundException("Could not find user with username = " + username);
+        }
+
+        User user = foundedUser.get();
+        return new org.springframework.security.core.userdetails.User(
+                username,
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
     }
 }
