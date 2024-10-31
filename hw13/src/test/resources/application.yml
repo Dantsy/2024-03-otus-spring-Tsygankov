@@ -1,0 +1,57 @@
+spring:
+  batch:
+    job:
+      enabled: false
+
+  shell:
+    interactive:
+      enabled: false
+    noninteractive:
+      enabled: false
+    command:
+      version:
+        enabled: false
+
+  datasource:
+      url: jdbc:h2:mem:testdb
+      username: user
+      password:
+      driver-class-name: org.h2.Driver
+  sql:
+      init:
+        schema-locations: classpath:schema.sql
+        data-locations: classpath:data.sql
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  data:
+    mongodb:
+      database: mongodbtest
+      host: localhost
+      port: 0
+
+  main:
+    allow-circular-references: true
+
+logging:
+  level:
+    ROOT: INFO
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2

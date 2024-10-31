@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:bookstoredb
+    username: user
+    password:
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:2024-10-11--0002-data.sql
+      schema-locations: classpath:2024-10-11--0001-schema.sql
+
+  shell:
+    interactive:
+      enabled: true
+    noninteractive:
+      enabled: false
+    command:
+      version:
+        enabled: false
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  data:
+    mongodb:
+      database: mongodb
+      host: localhost
+      port: 27017
+
+  batch:
+    job:
+      enabled: false
