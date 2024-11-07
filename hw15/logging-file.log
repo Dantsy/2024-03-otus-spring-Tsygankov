@@ -1,0 +1,69 @@
+14:12:26.854 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+14:12:26.878 [main] INFO  ru.otus.spring.hw.BookstoreApp - Starting BookstoreApp using Java 17.0.12 with PID 10092 (D:\2024-03-otus-spring-Tsygankov\hw15\target\classes started by redmi in D:\2024-03-otus-spring-Tsygankov)
+14:12:26.878 [main] INFO  ru.otus.spring.hw.BookstoreApp - No active profile set, falling back to 1 default profile: "default"
+14:12:27.534 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+14:12:27.580 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 42 ms. Found 4 JPA repository interfaces.
+14:12:28.112 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+14:12:28.117 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+14:12:28.118 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+14:12:28.118 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.15]
+14:12:28.191 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+14:12:28.191 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1287 ms
+14:12:28.439 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+14:12:28.565 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:bookstoredb user=USER
+14:12:28.566 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+14:12:28.604 [main] INFO  liquibase.database - Set default schema name to PUBLIC
+14:12:28.756 [main] INFO  liquibase.lockservice - Successfully acquired change log lock
+14:12:28.785 [main] INFO  liquibase.changelog - Reading resource: db/changelog/1.0/2024-10-25--0001-schema.sql
+14:12:28.799 [main] INFO  liquibase.changelog - Reading resource: db/changelog/1.0/2024-10-25--0002-data.sql
+14:12:28.809 [main] INFO  liquibase.changelog - Creating database history table with name: PUBLIC.DATABASECHANGELOG
+14:12:28.812 [main] INFO  liquibase.changelog - Reading from PUBLIC.DATABASECHANGELOG
+14:12:28.845 [main] INFO  liquibase.command - Using deploymentId: 0805148839
+14:12:28.846 [main] INFO  liquibase.changelog - Reading from PUBLIC.DATABASECHANGELOG
+Running Changeset: db/changelog/1.0/2024-10-25--0001-schema.sql::raw::includeAll
+14:12:28.924 [main] INFO  liquibase.changelog - Custom SQL executed
+14:12:28.925 [main] INFO  liquibase.changelog - ChangeSet db/changelog/1.0/2024-10-25--0001-schema.sql::raw::includeAll ran successfully in 49ms
+Running Changeset: db/changelog/1.0/2024-10-25--0002-data.sql::raw::includeAll
+14:12:28.952 [main] INFO  liquibase.changelog - Custom SQL executed
+14:12:28.953 [main] INFO  liquibase.changelog - ChangeSet db/changelog/1.0/2024-10-25--0002-data.sql::raw::includeAll ran successfully in 22ms
+14:12:28.983 [main] INFO  liquibase.util - UPDATE SUMMARY
+14:12:28.983 [main] INFO  liquibase.util - Run:                          2
+14:12:28.983 [main] INFO  liquibase.util - Previously run:               0
+14:12:28.983 [main] INFO  liquibase.util - Filtered out:                 0
+14:12:28.983 [main] INFO  liquibase.util - -------------------------------
+14:12:28.984 [main] INFO  liquibase.util - Total change sets:            2
+UPDATE SUMMARY
+Run:                          2
+Previously run:               0
+Filtered out:                 0
+-------------------------------
+Total change sets:            2
+14:12:28.985 [main] INFO  liquibase.util - Update summary generated
+14:12:28.985 [main] INFO  liquibase.command - Update command completed successfully.
+Liquibase: Update has been successful.
+14:12:28.989 [main] INFO  liquibase.lockservice - Successfully released change log lock
+14:12:28.992 [main] INFO  liquibase.lockservice - Successfully released change log lock
+14:12:28.992 [main] INFO  liquibase.command - Command execution complete
+14:12:29.090 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+14:12:29.164 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.13.Final
+14:12:29.166 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+14:12:29.399 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+14:12:30.321 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+14:12:30.322 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+14:12:31.031 [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page template: index
+14:12:31.484 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 16 endpoint(s) beneath base path '/actuator'
+14:12:31.533 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+14:12:31.547 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+14:12:31.557 [main] INFO  ru.otus.spring.hw.BookstoreApp - Started BookstoreApp in 4.957 seconds (process running for 5.495)
+Main page is here:
+http://localhost:8080
+Actuator health page here:
+http://localhost:8080/actuator/health
+HAL explorer here:
+http://localhost:8080/api-rest/
+14:12:32.118 [RMI TCP Connection(3)-192.168.0.104] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+14:12:32.118 [RMI TCP Connection(3)-192.168.0.104] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+14:12:32.119 [RMI TCP Connection(3)-192.168.0.104] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+14:15:10.493 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+14:15:10.495 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+14:15:10.496 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
