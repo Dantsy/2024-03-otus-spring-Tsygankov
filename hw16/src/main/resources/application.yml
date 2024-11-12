@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:bookstoredb}
+    username: ${SPRING_DATASOURCE_USERNAME:user}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+  jmx:
+    enabled: true
+  data:
+    rest:
+      base-path: /api-rest
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  level:
+    ROOT: INFO
+  file:
+    name: "logging-file.log"
+
+liquibase:
+  change-log: classpath:db/changelog/db.changelog-master.yaml
+  url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:bookstoredb}
+  user: ${SPRING_DATASOURCE_USERNAME:user}
+  password: ${SPRING_DATASOURCE_PASSWORD:}
+  enabled: true
