@@ -1,6 +1,5 @@
 package ru.otus.spring.hw.controllers;
 
-import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +16,7 @@ import ru.otus.spring.hw.dtos.BookDto;
 import ru.otus.spring.hw.dtos.BookDtoIds;
 import ru.otus.spring.hw.services.BookService;
 import ru.otus.spring.hw.services.CommentService;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +63,7 @@ public class BookRestController {
         var savedBook = bookService.update(book.getId(), book.getTitle(), book.getAuthorId(),
                 book.getGenreIds(), book.getCommentIds());
 
-        if (!StringUtils.isNullOrEmpty(newCommentContent)) {
+        if (!StringUtils.isEmpty(newCommentContent)) {
             commentService.insert(savedBook.getId(), newCommentContent);
         }
 

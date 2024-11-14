@@ -1,18 +1,18 @@
 CREATE TABLE authors
 (
-    id IDENTITY PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     full_name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE genres
 (
-    id IDENTITY PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE books
 (
-    id IDENTITY PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     title     VARCHAR(255) NOT NULL,
     author_id BIGINT       NOT NULL,
     FOREIGN KEY (author_id) REFERENCES authors (id)
@@ -20,7 +20,7 @@ CREATE TABLE books
 
 CREATE TABLE comments
 (
-    id IDENTITY PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     book_id BIGINT REFERENCES books (id) ON DELETE CASCADE,
     content VARCHAR(1024)
 );

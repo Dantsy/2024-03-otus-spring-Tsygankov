@@ -7,6 +7,10 @@ LABEL release-date="2024-11-02"
 
 EXPOSE 8080
 
-ADD target/hw16-2.0.0.jar hw16-2.0.0.jar
+ADD target/hw16-2.0.0.jar /hw16-2.0.0.jar
 
-ENTRYPOINT ["java","-jar","/hw16-2.0.0.jar"]
+COPY wait-for-postgres.sh /wait-for-postgres.sh
+
+RUN chmod +x /wait-for-postgres.sh
+
+ENTRYPOINT ["./wait-for-postgres.sh", "postgres", "java", "-jar", "/hw16.jar"]
