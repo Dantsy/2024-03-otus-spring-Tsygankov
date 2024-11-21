@@ -1,0 +1,12 @@
+FROM openjdk:17-jdk-slim-bullseye
+
+LABEL maintainer="Daniil <dantsy@yandex.ru>"
+LABEL description="This is a Docker image based on Debian with java and Bookstore application."
+LABEL version="2.0"
+LABEL release-date="2024-11-02"
+
+EXPOSE 8080
+
+ADD target/hw16-2.0.0.jar /hw16.jar
+
+ENTRYPOINT ["java", "-jar", "/hw16.jar"]

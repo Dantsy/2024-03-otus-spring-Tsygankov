@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/bookstoredb}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+  jmx:
+    enabled: true
+  data:
+    rest:
+      base-path: /api-rest
+  h2:
+    console:
+      enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+
+logging:
+  level:
+    ROOT: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+  file:
+    name: "logging-file.log"
+
+liquibase:
+  change-log: classpath:db/changelog/db.changelog-master.yaml
+  url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/bookstoredb}
+  user: ${SPRING_DATASOURCE_USERNAME:postgres}
+  password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+  enabled: true
