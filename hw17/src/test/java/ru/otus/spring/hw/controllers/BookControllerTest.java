@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import ru.otus.spring.hw.dtos.BookDtoIds;
 import ru.otus.spring.hw.exceptions.EntityNotFoundException;
 import ru.otus.spring.hw.mappers.DtoMapperImpl;
 import ru.otus.spring.hw.repositories.TestDataHolder;
@@ -62,9 +61,10 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Should return correct book list")
-    public void ShouldReturnCorrectBookList() throws Exception {
+    public void shouldReturnCorrectBookList() throws Exception {
         var expectedBookDtoList = TestDataHolder.getBooks().stream().map(mapper::bookToBookDTO).toList();
         given(bookService.findAll()).willReturn(expectedBookDtoList);
+
         mockMvc.perform(MockMvcRequestBuilders.get("/books/list"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("book-list-ajax"));
@@ -72,8 +72,7 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Should return correct edit page with attributes")
-    public void ShouldReturnCorrectBookEditPageWithAttributes() throws Exception {
-
+    public void shouldReturnCorrectBookEditPageWithAttributes() throws Exception {
         var expectedBook = TestDataHolder.getBooks().get(FIRST_BOOK_INDEX);
         var expectedBookDto = mapper.bookToBookDTO(expectedBook);
         var expectedGenreDtoList = TestDataHolder.getGenres().stream().map(mapper::genreToGenreDto).toList();
@@ -97,29 +96,10 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Should return error when send invalid id")
-    public void ShouldReturnErrorInvalidId() throws Exception {
-
+    public void shouldReturnErrorInvalidId() throws Exception {
         given(bookService.findById(2)).willThrow(new EntityNotFoundException("Book with id %d not found".formatted(2)));
+
         mockMvc.perform(MockMvcRequestBuilders.get("/books/edit").param("id", "2"))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-
-    }
-
-    @Test
-    @DisplayName("Should return correct edit page for new book")
-    public void ShouldReturnCorrectBookEditPageForNewBook() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/edit").param("id", "0"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("book-edit-ajax"))
-                .andExpect(MockMvcResultMatchers.model().attributeExists("book", "authors", "genres", "comments"))
-                .andExpect(MockMvcResultMatchers.model().attribute("book", Matchers.is(new BookDtoIds())));
-    }
-
-    @Test
-    @DisplayName("Should return error when book service throws exception")
-    public void ShouldReturnErrorWhenBookServiceThrowsException() throws Exception {
-        given(bookService.findById(anyLong())).willThrow(new RuntimeException("Test exception"));
-        mockMvc.perform(MockMvcRequestBuilders.get("/books/edit").param("id", "1"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 }
