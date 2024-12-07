@@ -1,0 +1,25 @@
+version: '3'
+services:
+  hw18:
+    container_name: docker-hw18
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=r2dbc:postgresql://postgres:5432/bookstoredb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres
+    command: ["java", "-jar", "/hw18.jar"]
+  postgres:
+    image: "postgres:13"
+    container_name: docker-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bookstoredb
